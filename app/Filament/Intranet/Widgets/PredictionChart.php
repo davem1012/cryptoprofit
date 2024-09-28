@@ -14,8 +14,6 @@ class PredictionChart extends ChartWidget
 
     protected function getData(): array
     {
-
-        
         $data = Trend::model(Prediction::class)
             ->between(
                 start: Carbon::createFromFormat('Y-m-d', '2024-06-20') ,# now()->startOfYear(),
