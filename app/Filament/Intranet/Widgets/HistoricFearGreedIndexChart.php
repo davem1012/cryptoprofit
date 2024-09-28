@@ -3,41 +3,42 @@
 namespace App\Filament\Intranet\Widgets;
 
 
-use App\Models\HistoricoCoinsPrice;
+use App\Models\HistoricoFearGreedIndex;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use Illuminate\Support\Carbon;
 
-class PredictionChart extends ChartWidget
+class HistoricFearGreedIndexChart extends ChartWidget
 {
-    protected static ?string $heading = 'Historico Precio Bitcoin';
-
+    protected static ?string $heading = 'Historico - Sentimiento del Mercado';
 
     protected function getData(): array
     {
-        $data = Trend::query(HistoricoCoinsPrice::where('coin', 'bitcoin'))
+        $data = Trend::model(HistoricoFearGreedIndex::class)
             ->between(
-                start: Carbon::createFromFormat('Y-m-d', '2020-06-23'), # now()->startOfYear(),
+                start: Carbon::createFromFormat('Y-m-d', '2024-06-01'), # now()->startOfYear(),
                 end: Carbon::createFromFormat('Y-m-d', '2024-09-28'), #now(),
             )
             ->perDay()
-            ->sum('price');
+            ->sum('value');
 
         return [
             'datasets' => [
                 [
-                    'label' => 'BTCUSD',
+                    'label' => 'Indice',
                     'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
+                    'backgroundColor' => '#36A2EB',
+                    'borderColor' => '#9BD0F5',
                 ],
             ],
             'labels' => $data->map(fn(TrendValue $value) => $value->date),
         ];
     }
 
-
     protected function getType(): string
     {
-        return 'line';
+        return 'bar';
     }
+    
 }

@@ -10,7 +10,11 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+
 use Filament\Widgets;
+use App\Filament\Intranet\Widgets as IntranetWidgets;
+use App\Livewire as LivewireWidgets;
+
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -53,10 +57,13 @@ class IntranetPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Intranet/Widgets'), for: 'App\\Filament\\Intranet\\Widgets')
-            /* ->widgets([
-                Widgets\AccountWidget::class,
-            ]) */
+            //->discoverWidgets(in: app_path('Filament/Intranet/Widgets'), for: 'App\\Filament\\Intranet\\Widgets')
+            ->widgets([
+                //Widgets\FilamentInfoWidget::class,
+                IntranetWidgets\PredictionChart::class,
+                IntranetWidgets\HistoricFearGreedIndexChart::class,
+                //LivewireWidgets\ChartFearGreed::class
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
